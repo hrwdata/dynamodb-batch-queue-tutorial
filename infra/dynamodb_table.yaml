@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: DynamoDB table for nightly database batch queue requests
+
+Resources:
+  DbBatchWindowRequestsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: db_batch_window_requests
+      BillingMode: PAY_PER_REQUEST
+      Tags:
+        - Key: Project
+          Value: db-batch-window
+        - Key: Environment
+          Value: demo
+        - Key: Lifecycle
+          Value: temporary
+      AttributeDefinitions:
+        - AttributeName: batch_date
+          AttributeType: S
+        - AttributeName: window_job_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: batch_date
+          KeyType: HASH
+        - AttributeName: window_job_id
+          KeyType: RANGE
+
+Outputs:
+  TableName:
+    Description: DynamoDB table name
+    Value: !Ref DbBatchWindowRequestsTable
