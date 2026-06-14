@@ -13,9 +13,6 @@ DDB_STORAGE_GB_MONTH_USD = Decimal("0.2500000000")
 EC2_T3_SMALL_HOURLY_USD = Decimal("0.0208000000")
 EC2_GP3_GB_MONTH_USD = Decimal("0.0800000000")
 
-# SageMaker Notebook / Studio-Notebook ml.t3.medium price in us-east-1.
-SAGEMAKER_ML_T3_MEDIUM_HOURLY_USD = Decimal("0.0500000000")
-
 # Cost management reference prices.
 COST_EXPLORER_API_REQUEST_USD = Decimal("0.0100000000")
 BUDGET_ACTION_ENABLED_EXTRA_DAILY_USD = Decimal("0.10")
@@ -43,7 +40,3 @@ def gp3_storage_cost(gb: Decimal, hours: Decimal) -> Decimal:
 
 def ec2_t3_small_cost(hours: Decimal) -> Decimal:
     return hours * EC2_T3_SMALL_HOURLY_USD
-
-
-def sagemaker_ml_t3_medium_cost(hours: Decimal) -> Decimal:
-    return hours * SAGEMAKER_ML_T3_MEDIUM_HOURLY_USD
