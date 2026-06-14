@@ -11,7 +11,6 @@ Published rates used in the cost formulas:
 - DynamoDB standard table storage beyond the first 25 GB-months: **$0.25** per GB-month
 - EC2 `t3.small` on-demand Linux instance: **$0.0208** per hour
 - EBS `gp3` storage: **$0.08** per GB-month
-- SageMaker Notebook / Studio-Notebook `ml.t3.medium`: **$0.05** per hour
 - Cost Explorer console: **$0.00**
 - Cost Explorer API: **$0.01** per paginated API request
 - AWS Budgets monitoring: **$0.00**
@@ -49,16 +48,6 @@ The main tutorial path uses `Query`, not `Scan`, so the cost story aligns with t
 The main queueing tutorial runs locally.
 
 - AWS compute charge for the core simulation: **$0.00**
-
-### 4. Optional PyTorch Extension
-
-PyTorch is not required for the main tutorial.
-
-If the optional [`pytorch_extension.py`](../pytorch_extension.py) script is run locally:
-
-- AWS compute charge: **$0.00**
-
-If that optional extension is moved to AWS-managed compute later, the billed resource becomes the selected instance type.
 
 ## Demo Cost by Action
 
@@ -131,7 +120,6 @@ Recommended control practices for this tutorial:
 - keep DynamoDB in on-demand mode
 - keep the main workflow query-based
 - avoid backups, exports, Streams, and extra indexes unless they are part of the lesson
-- keep PyTorch optional and local
 - delete demo resources after the exercise
 
 ## Cleanup
