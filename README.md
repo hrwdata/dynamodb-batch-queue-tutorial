@@ -1,8 +1,18 @@
-# AWS Tutorial: Queueing Analysis for Database Batch Scheduling
+# Queueing Tutorial: Batch Scheduling with Discrete-Event Simulation
 
 This repository is a simple tutorial for a canonical database-engineering problem: a nightly maintenance queue where ETL jobs, refreshes, backfills, and index work compete for a limited execution window.
 
 The repository is intentionally **DynamoDB-centric**. It uses DynamoDB as a workload catalog and status store, then queries a single batch night and runs a queueing simulation in Python to estimate delay, congestion, and overflow risk. It is a teaching example for capacity planning, not a production scheduler.
+
+## Local-First Usage
+
+You can run the core tutorial locally without AWS credentials or cloud resources:
+
+```bash
+pip install -r requirements.txt
+python -m unittest discover -s tests -v
+python tutorial.py --source local
+```
 
 ## What This Tutorial Teaches
 
@@ -10,7 +20,8 @@ The repository is intentionally **DynamoDB-centric**. It uses DynamoDB as a work
 - design the table for `Query` access by nightly batch date and requested window
 - derive queueing parameters such as `lambda`, `mu`, `c`, and `rho`
 - simulate wait time, queue length, and overflow risk
-- understand when PyTorch is useful and when it is unnecessary
+- compare a stable workload against an overloaded workload
+- reproduce the reference scenarios with local sample data and tests
 
 ## Industry Standards
 
@@ -34,13 +45,11 @@ References:
 README.md
 .gitignore
 requirements.txt
-requirements-ml.txt
 aws_costs.py
 sample_jobs.py
 queue_analysis.py
 seed_job_requests.py
 tutorial.py
-pytorch_extension.py
 cleanup_demo.py
 docs/
   architecture.md
@@ -116,19 +125,25 @@ Install the core dependencies:
 pip install -r requirements.txt
 ```
 
+The local tutorial path requires only Python and the packages in `requirements.txt`.
+
 Run the local test suite:
 
 ```bash
 python -m unittest discover -s tests -v
 ```
 
-Optional PyTorch extension:
+## Optional AWS-Backed Usage
+
+The AWS-backed path is optional. Use it only if you want to load job requests from DynamoDB instead of the local sample dataset.
+
+Before running AWS commands, verify that `boto3` is available:
 
 ```bash
-pip install -r requirements-ml.txt
+python -c "import boto3; import seed_job_requests, cleanup_demo; print('aws-import-ok')"
 ```
 
-Configure AWS credentials and region if you want the AWS-backed path:
+Configure AWS credentials and region:
 
 ```bash
 aws configure
@@ -139,6 +154,8 @@ or:
 ```bash
 set AWS_REGION=us-east-1
 ```
+
+AWS-backed examples require configured credentials, an allowed AWS account and region, DynamoDB permissions, and acceptance of possible AWS charges.
 
 ## Execution
 
@@ -166,25 +183,6 @@ Optionally filter one requested window:
 python tutorial.py --source aws --batch-date 2026-05-13 --window 02:00 --workers 3
 ```
 
-Optional PyTorch extension:
-
-```bash
-python pytorch_extension.py
-```
-
-## Why PyTorch Is Optional
-
-For a first queueing tutorial, PyTorch is usually the wrong starting point. A simple queueing problem is better explained with explicit assumptions and a discrete-event simulation.
-
-PyTorch becomes useful when:
-
-- service time changes sharply by workload class
-- lock contention creates nonlinear delay patterns
-- arrival pressure depends on many correlated upstream signals
-- the goal is forecasting or learned dispatch, not first-principles explanation
-
-This repository keeps PyTorch in a separate optional script for that reason.
-
 ## Limitations
 
 - The sample dataset is small and instructional.
@@ -201,7 +199,7 @@ The local tutorial path is intended to work without provisioning AWS resources:
 python tutorial.py --source local
 ```
 
-The AWS-backed path and the optional PyTorch extension are kept separate so the core teaching flow stays lightweight and easy to review.
+The AWS-backed path is kept separate so the core teaching flow stays lightweight and easy to review.
 
 ## References
 

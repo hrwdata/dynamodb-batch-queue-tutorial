@@ -85,7 +85,3 @@ queue_drained_minute=490
 - The stable case stays below full utilization and drains before the cutoff.
 - The overloaded case crosses `rho >= 1`, accumulates a visible queue, and overruns the batch window.
 - Exclusive-lock jobs make congestion worse because they block the full worker pool in this teaching model.
-
-## Optional Extension
-
-The PyTorch extension is intentionally separate from the main tutorial. On the tiny toy history in this repo, its holdout forecast remains poor, which is the correct teaching outcome: without real historical signal, ML does not replace first-principles queueing analysis.

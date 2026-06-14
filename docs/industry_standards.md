@@ -42,15 +42,15 @@ Sources:
 - [Best practices for sort keys](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-sort-keys.html)
 - [Best practices for time-series data](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-time-series.html)
 
-## When PyTorch Is Standard and When It Is Not
+## Queueing Analysis Scope
 
-PyTorch is not an industry-standard requirement for a first queueing tutorial.
+This repository focuses on a finite nightly planning window, not on closed-form results for a textbook steady-state queue.
 
-It becomes justified when:
+The core method is a discrete-event simulation that makes the scheduling rules explicit:
 
-- queue delay is driven by many interacting features
-- simple service-time assumptions are consistently wrong
-- lock contention and workload mix produce nonlinear outcomes
-- the problem shifts from explanation to prediction
+- arrivals are tied to requested windows
+- service times are taken from the sample workload catalog
+- worker count is fixed for each run
+- exclusive-lock jobs temporarily consume the full worker pool
 
-In this repo, PyTorch is kept as an optional extension for that reason.
+That scope keeps the tutorial aligned with the code in the repository and makes the reference results reproducible from the sample data.

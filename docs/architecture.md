@@ -9,7 +9,6 @@ flowchart LR
     C --> D[Arrival and Runtime Summaries]
     D --> E[Queue Simulation]
     E --> F[Queueing Metrics]
-    E -. optional .-> G[PyTorch Forecast Extension]
 ```
 
 ## Components
@@ -51,7 +50,6 @@ The queue includes:
 [`queue_analysis.py`](../queue_analysis.py) provides:
 
 - access-pattern summaries
-- queueing feature extraction
 - a simple discrete-event simulator
 - blocking behavior for exclusive-lock jobs
 
@@ -73,12 +71,6 @@ Local mode shows two reference cases:
 - an overloaded batch night with `rho >= 1`
 
 AWS mode queries one selected `batch_date` from DynamoDB and reports the same metrics plus consumed read capacity.
-
-### Optional ML Extension
-
-[`pytorch_extension.py`](../pytorch_extension.py) is intentionally outside the core path.
-
-It demonstrates one honest use case for PyTorch: forecasting future queue pressure from historical nightly summaries when simple queueing assumptions no longer explain delay well.
 
 ## Design Notes
 

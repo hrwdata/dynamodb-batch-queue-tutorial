@@ -49,31 +49,6 @@ def summarize_jobs(jobs):
     }
 
 
-def feature_vector(jobs):
-    summary = summarize_jobs(jobs)
-    total_jobs = max(1, summary["job_count"])
-    return [
-        summary["job_count"] / 20.0,
-        summary["avg_runtime_minutes"] / 90.0,
-        summary["exclusive_jobs"] / total_jobs,
-        summary["high_priority_jobs"] / total_jobs,
-        summary["window_counts"].get("01:00", 0) / 10.0,
-        summary["window_counts"].get("02:00", 0) / 10.0,
-        summary["window_counts"].get("03:00", 0) / 10.0,
-    ]
-
-
-def scale_job_runtimes(jobs, scale: float):
-    scaled = []
-    for job in jobs:
-        item = normalize_job_record(job)
-        item["estimated_runtime_minutes"] = max(
-            5, int(round(item["estimated_runtime_minutes"] * scale))
-        )
-        scaled.append(item)
-    return scaled
-
-
 def percentile(values, pct: int) -> float:
     if not values:
         return 0.0
